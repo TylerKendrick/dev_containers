@@ -33,17 +33,71 @@ Frameworks should be prefixed by the string "framework-" and be followed by the 
 
 All supported toolsets for your organization should be defined as dockerfiles.
 
-#### tool-\<name>:\<version>-\<os>
+#### `tool-<name>:<version>-<os>`
 
 #### CLIs
 
-##### tool-cli-\<name>:\<version>-\<os>
+##### `tool-cli-<name>:<version>-<os>`
 
 ### IDEs
 
 All supported IDEs for your organization (with remote container support) should be defined as dockerfiles.
 
 
-### Composite Workspaces
+## Composite Workspaces
 
-#### \<workspace>:\<version>-\<os>
+Composite workspaces should be constructed as multi-stage docker builds. These workspaces should be built using each layer, except the ide.
+
+### `<workspace>:<version>-<os>`
+
+```dockerfile
+# syntax=docker/dockerfile:1
+# runtime layer
+FROM dev-containers/runtime-java:latest as runtime
+WORKDIR /src/
+COPY /runtime ./runtime/java
+
+# sdk layer
+FROM dev-containers/sdk-java:latest as sdk
+WORKDIR /src/
+COPY /sdk ./sdk/java
+
+# framework layer
+FROM dev-containers/framework-java-spring:latest as spring-framework
+WORKDIR /src/
+COPY /framework ./framework/springboot
+
+# tools-cli layer
+FROM dev-containers/tools-cli-springboot as tools-cli
+WORKDIR /src/
+COPY /tools-cli ./tools-cli/springboot
+
+```
+## Composite Codespaces
+
+### `<codespace>:<version>-<os>`
+
+Example eclipse codespace:
+```dockerfile
+# syntax=docker/dockerfile:1
+FROM workspaces/java-springboot:latest as workspace
+COPY /src ./src
+
+FROM dev-containers/ide-eclipse:latest as ide
+WORKDIR /src/
+COPY /ide ./ide
+RUN go eclipse ./ide
+
+```
+
+Example vscode codespace:
+```dockerfile
+# syntax=docker/dockerfile:1
+FROM workspaces/java-springboot:latest as workspace
+COPY /src ./src
+
+FROM dev-containers/ide-vscode:latest as ide
+WORKDIR /src/
+COPY /ide ./ide
+RUN go vscode ./ide
+```
