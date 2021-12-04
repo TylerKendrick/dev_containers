@@ -10,14 +10,14 @@ A dev container in this repository follows a composition pattern for constructin
 
 All supported runtimes for your organization should be defined as dockerfiles.
 
-#### runtime-\<name>
+#### `runtime-<name>`
 Runtime images should be prefixed by the string "runtime-" and be followed by the name of the runtime. For example, a container with the java runtime would read "runtime-java".
 
 ### SDKs
 
 All supported sdks for your organization should be defined as dockerfiles.
 
-#### sdk-\<name>
+#### `sdk-<name>`
 
 SDKs should be prefixed by the string "sdk-" and be followed by the name of the sdk. For example, a container with the java sdk would read "sdk-java".
 
@@ -25,7 +25,7 @@ SDKs should be prefixed by the string "sdk-" and be followed by the name of the 
 
 All supported frameworks for your organization should be defined as dockerfiles.
 
-#### framework-\<sdk>-\<name>:\<version>-\<os>
+#### `framework-<sdk>-<name>:<version>-<os>`
 
 Frameworks should be prefixed by the string "framework-" and be followed by the name of the dependent sdk with the string "<sdk>-", then by the name of the framework. For example, a container with the Spring Framework from the Spring Boot Platform for Java would read "framework-java-spring". This is to reduce the chance of naming collisions between frameworks for different languages.
 
