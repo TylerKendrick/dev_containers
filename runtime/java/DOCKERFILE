@@ -1,0 +1,4 @@
+# syntax=docker/dockerfile:1
+FROM openjdk:latest as runtime
+WORKDIR /src/
+COPY /runtime ./runtime/java
